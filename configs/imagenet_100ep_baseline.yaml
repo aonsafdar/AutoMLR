@@ -1,0 +1,87 @@
+# AD-ViT Phase 3 — ImageNet-1K 100ep baseline (IN-B100)
+#
+# Architecture: P2-H26 champion (83.37% CIFAR-100 100ep). ~22.15M params.
+# Recipe: Phase 3 100ep screening per CLAUDE.md:
+#   BS=256/GPU (512 total), LR=5e-4, WD=0.05, 100ep, warmup=10ep,
+#   Mixup=0.4, CutMix=0.5, rand-m7-mstd0.5-inc1, RE=0.1, LS=0.1,
+#   DROP_PATH=[0,0.05,0.1,0.2].
+# Establishes the benchmark all subsequent Phase 3 hypotheses are compared against.
+
+DATA:
+  DATASET: imagenet
+  DATA_PATH: /path/to/imagenet
+  IMG_SIZE: 224
+
+MODEL:
+  TYPE: cls_cvt
+  NAME: advit_in_b100_h26
+  NUM_CLASSES: 1000
+  LABEL_SMOOTHING: 0.1
+  DROP_RATE: 0.0
+  DROP_PATH_RATE: 0.0
+
+  SPEC:
+    INIT: trunc_norm
+    NUM_STAGES: 4
+    PATCH_SIZE:   [7, 3, 3, 3]
+    PATCH_STRIDE: [4, 2, 2, 2]
+    PATCH_PADDING: [2, 1, 1, 1]
+    DIM_EMBED: [96, 192, 384, 640]
+    NUM_HEADS: [1, 1, 1, 1]
+    SA_TAIL_DEPTH: [0, 0, 0, 0]
+    SA_TAIL_NUM_HEADS: [0, 0, 0, 0]
+    TAIL_TYPE: 'sa'
+    DEPTH: [1, 2, 5, 10]
+    PATCH_EMBED_METHOD: ['dw_sep', 'dw_only', 'dw_only', 'dw_sep']
+    MLP_RATIO: [0, 0, 0, 0]
+    CA_MLP_RATIO: [8.0, 8.0, 4.0, 1.0]
+    TAIL_MLP_RATIO: [4.0, 4.0, 4.0, 4.0]
+    ATTN_DROP_RATE: [0.0, 0.0, 0.0, 0.0]
+    DROP_RATE: [0.0, 0.0, 0.0, 0.0]
+    DROP_PATH_RATE: [0.0, 0.05, 0.1, 0.2]
+    QKV_BIAS: [True, True, True, True]
+    CLS_TOKEN: [False, False, False, False]
+    POS_EMBED: [False, False, False, False]
+    QKV_PROJ_METHOD: ['dw_bn', 'dw_bn', 'dw_bn', 'dw_bn']
+    KERNEL_QKV: [3, 3, 3, 5]
+    PADDING_KV: [1, 1, 1, 2]
+    STRIDE_KV: [1, 1, 1, 1]
+    PADDING_Q: [1, 1, 1, 2]
+    STRIDE_Q: [1, 1, 1, 1]
+    DW_SHORTCUT_BACKBONE: true
+    DW_SHORTCUT_TAIL: false
+    LAYER_SCALE: 1.0e-4
+    CHANNEL_PAIR_BIAS: false
+    CROSS_STAGE_FUSION: true
+    CROSS_STAGE_FUSION_S0: true
+    AUX_LOSS_WEIGHT: 0.4
+    AUX_LOSS_WEIGHT_S1: 0.2
+    AUX_LOSS_WEIGHT_S0: 0.1
+    AUX_LOSS_WEIGHT_MID: 0.15
+    AUX_MID_BLOCK_IDX: 5
+    CPE: true
+    CPE_KERNEL_SIZE: 5
+    CPE_REPEAT_INTERVAL: [0, 0, 2, 4]
+    SWIGLU: true
+    DW_SHORTCUT_KERNEL: [3, 3, 3, 5]
+    NORM_LAYER: layernorm
+    CHANNEL_GROUPS: [1, 1, 1, 1]
+
+TRAIN:
+  EPOCHS: 100
+  WARMUP_EPOCHS: 10
+  BASE_LR: 5e-4
+  WARMUP_LR: 1e-6
+  MIN_LR: 1e-5
+  WEIGHT_DECAY: 0.05
+
+AUG:
+  MIXUP: 0.4
+  CUTMIX: 0.5
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  MIXUP_MODE: batch
+  AUTO_AUGMENT: rand-m7-mstd0.5-inc1
+  REPROB: 0.1
+  REMODE: pixel
+  RECOUNT: 1
