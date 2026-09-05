@@ -3,8 +3,7 @@
 Code and research artifacts accompanying the anonymous double-blind workshop
 submission:
 
-> **Autonomous Architecture Research with a Language-Model Agent: A
-> Channel-Attention Vision Transformer Case Study**
+> **Behavioural Signatures of a Language-Model Agent in Autonomous Vision-Architecture Research**
 
 This repository is the browsable mirror of the submission's supplementary
 material. It contains everything needed to (a) inspect the model, training
