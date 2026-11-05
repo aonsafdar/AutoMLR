@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the paper below."
+title: "Behavioural Signatures of a Language-Model Agent in Autonomous Vision-Architecture Research"
+authors:
+  - family-names: Safdar
+    given-names: Aon
+    affiliation: University College Dublin, Ireland
+  - family-names: Saadeldin
+    given-names: Mohamed
+    affiliation: University College Dublin, Ireland
+year: 2026
+url: "https://github.com/aonsafdar/AutoMLR"
+preferred-citation:
+  type: conference-paper
+  title: "Behavioural Signatures of a Language-Model Agent in Autonomous Vision-Architecture Research"
+  authors:
+    - family-names: Safdar
+      given-names: Aon
+    - family-names: Saadeldin
+      given-names: Mohamed
+  collection-title: "NeurIPS 2026 Workshop for Autonomous ML Research (AutoMLR)"
+  year: 2026
